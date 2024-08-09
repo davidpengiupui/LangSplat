@@ -233,11 +233,16 @@ def evaluate(feat_dir, output_path, ae_ckpt_path, json_folder, mask_thresh, enco
     )
 
     gt_ann, image_shape, image_paths = eval_gt_lerfdata(Path(json_folder), Path(output_path))
+    debu(gt_ann)
+    debu(image_shape)
+    debu(image_paths)
     eval_index_list = [int(idx) for idx in list(gt_ann.keys())]
+    debu(eval_index_list)
     compressed_sem_feats = np.zeros((len(feat_dir), len(eval_index_list), *image_shape, 3), dtype=np.float32)
     for i in range(len(feat_dir)):
         feat_paths_lvl = sorted(glob.glob(os.path.join(feat_dir[i], '*.npy')),
                                key=lambda file_name: int(os.path.basename(file_name).split(".npy")[0]))
+        debu(feat_paths_lvl)
         for j, idx in enumerate(eval_index_list):
             compressed_sem_feats[i][j] = np.load(feat_paths_lvl[idx])
 
@@ -266,6 +271,9 @@ def evaluate(feat_dir, output_path, ae_ckpt_path, json_folder, mask_thresh, enco
             restored_feat = restored_feat.view(lvl, h, w, -1)           # 3x832x1264x512
         
         img_ann = gt_ann[f'{idx}']
+        debu(img_ann)
+        print(img_ann.keys())
+        print(list(img_ann.keys()))
         clip_model.set_positives(list(img_ann.keys()))
         
         c_iou_list, c_lvl = activate_stream(restored_feat, rgb_img, clip_model, image_name, img_ann,
