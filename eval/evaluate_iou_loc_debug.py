@@ -141,6 +141,8 @@ def activate_stream(sem_map,
             mask_pred = smooth(mask_pred)
             mask_lvl[i] = mask_pred
             mask_gt = img_ann[clip_model.positives[k]]['mask'].astype(np.uint8)
+            print(clip_model.positives[k])
+            print(img_ann[clip_model.positives[k]])
             
             # calculate iou
             intersection = np.sum(np.logical_and(mask_gt, mask_pred))
