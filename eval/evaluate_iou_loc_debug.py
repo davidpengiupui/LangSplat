@@ -23,6 +23,11 @@ from autoencoder.model import Autoencoder
 from openclip_encoder import OpenCLIPNetwork
 from utils import smooth, colormap_saving, vis_mask_save, polygon_to_mask, stack_mask, show_result
 
+from varname import nameof
+
+def debu(v):
+    print(nameof(v) + ': ' + v)
+
 
 def get_logger(name, log_file=None, log_level=logging.INFO, file_mode='w'):
     logger = logging.getLogger(name)
@@ -328,6 +333,11 @@ if __name__ == "__main__":
     output_path = os.path.join(args.output_dir, dataset_name)
     ae_ckpt_path = os.path.join(args.ae_ckpt_dir, dataset_name, "ae_ckpt/best_ckpt.pth")
     json_folder = os.path.join(args.json_folder, dataset_name)
+
+    debu(feat_dir)
+    debu(output_path)
+    debu(ae_ckpt_path)
+    debu(json_folder)
 
     # NOTE logger
     timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
